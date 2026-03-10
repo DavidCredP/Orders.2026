@@ -22,8 +22,8 @@ public class SeedDb
     {
         if (!_context.Categories.Any())
         {
-            _context.Categories.Add(new Category { CategoryName = "Calzado" });
-            _context.Categories.Add(new Category { CategoryName = "Tecnologia" });
+            _context.Categories.Add(new Category { Name = "Calzado" });
+            _context.Categories.Add(new Category { Name = "Tecnologia" });
             await _context.SaveChangesAsync();
         }
     }
@@ -32,8 +32,8 @@ public class SeedDb
     {
         if (!_context.Categories.Any())
         {
-            _context.Countries.Add(new Country { CountryName = "Colombia" });
-            _context.Countries.Add(new Country { CountryName = "Mexico" });
+            _context.Countries.Add(new Country { Name = "Colombia" });
+            _context.Countries.Add(new Country { Name = "Mexico" });
             await _context.SaveChangesAsync();
         }
     }
