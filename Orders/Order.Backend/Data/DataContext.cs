@@ -9,11 +9,13 @@ public class DataContext : DbContext
     {
     }
 
+    public DbSet<Category> Categories { get; set; }
     public DbSet<Country> Countries { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<Category>().HasIndex(e => e.CategoryName).IsUnique();
         modelBuilder.Entity<Country>().HasIndex(e => e.CountryName).IsUnique();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Order.Backend.Data;
+using Order.Backend.UnitsOfWork.Interfaces;
 using Orders.Shared.Entities;
 using System.Diagnostics.Metrics;
 
@@ -9,26 +10,9 @@ namespace Order.Backend.Controllers;
 [Route("api/[controller]")]
 
 [ApiController]
-public class CountriesController : ControllerBase
+public class CountriesController : GenericController<Country>
 {
-    private readonly DataContext _context;
-
-    public CountriesController(DataContext context)
+    public CountriesController(IGenericUnitOfWork<Country> unitOfWork) : base(unitOfWork)
     {
-        _context = context;
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> GetAsync()
-    {
-        return Ok(await _context.Countries.ToListAsync());
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> PostAsync(Country country)
-    {
-        _context.Countries.Add(country);
-        await _context.SaveChangesAsync();
-        return Ok(country);
     }
 }
