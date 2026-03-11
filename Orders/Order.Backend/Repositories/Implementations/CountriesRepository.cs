@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Order.Backend.Data;
+using Order.Backend.Helpers;
 using Order.Backend.Repositories.Interfaces;
+using Orders.Shared.DTOs;
 using Orders.Shared.Entities;
 using Orders.Shared.Responses;
 
@@ -15,6 +17,17 @@ public class CountriesRepository : GenericRepository<Country>, ICountriesReposit
         _context = context;
     }
 
+    public override async Task<ActionResponse<IEnumerable<Country>>> GetAsync(PaginationDTO pagination)
+    {
+        var queryable = _context.Countries.Include(c => c.States).AsQueryable();
+
+        return new ActionResponse<IEnumerable<Country>>
+        {
+            WasSuccess = true,
+            Result = await queryable.OrderBy(x => x.Name).Paginate(pagination).ToListAsync()
+        };
+    }
+
     public override async Task<ActionResponse<IEnumerable<Country>>> GetAsync()
     {
         var contries = await _context.Countries.Include(c => c.States).ToListAsync();
@@ -27,7 +40,7 @@ public class CountriesRepository : GenericRepository<Country>, ICountriesReposit
 
     public override async Task<ActionResponse<Country>> GetAsync(int id)
     {
-        var country = await _context.Countries.Include(c => c.States!).ThenInclude(x => x.Cities).FirstOrDefaultAsync(c => c.CountryId == id);
+        var country = await _context.Countries.Include(c => c.States!).ThenInclude(x => x.Cities).FirstOrDefaultAsync(c => c.Id == id);
         if (country == null)
         {
             return new ActionResponse<Country>
