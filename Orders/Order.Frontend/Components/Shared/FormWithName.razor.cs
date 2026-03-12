@@ -16,11 +16,26 @@ public partial class FormWithName<TModel> where TModel : IEntityWithName
     [EditorRequired, Parameter] public EventCallback ReturnAction { get; set; }
 
     [Inject] private IDialogService DialogService { get; set; } = null!;
+    [CascadingParameter] private IMudDialogInstance? MudDialog { get; set; }
 
     public bool FormPostedSuccessfully { get; set; }
 
     protected override void OnInitialized()
     {
         editContext = new(Model);
+    }
+
+    private async Task OnReturn()
+    {
+        if (MudDialog is not null)
+        {
+            // Si está dentro de un modal, cerramos el modal cancelándolo
+            MudDialog.Cancel();
+        }
+        else if (ReturnAction.HasDelegate)
+        {
+            // De lo contrario (ej: por página normal), llamamos a tu método normal NavigateTo
+            await ReturnAction.InvokeAsync();
+        }
     }
 }

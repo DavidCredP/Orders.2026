@@ -93,7 +93,7 @@ public partial class CountryDetails
     {
         int page = state.Page + 1;
         int pageSize = state.PageSize;
-        var url = $"{baseUrl}/paginated?id={CountryId}&page={page}&recordsnumber={pageSize}";
+        var url = $"{baseUrl}/paginated?id={CountryId}&pageNumber={page}&pageSize={pageSize}";
 
         if (!string.IsNullOrWhiteSpace(Filter))
         {

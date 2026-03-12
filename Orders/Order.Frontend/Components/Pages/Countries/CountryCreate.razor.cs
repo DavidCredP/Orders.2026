@@ -29,6 +29,7 @@ public partial class CountryCreate
 
     private void Return()
     {
+        Console.WriteLine("Return method called in CountryCreate");
         NavigationManager.NavigateTo("/countries");
     }
 }
