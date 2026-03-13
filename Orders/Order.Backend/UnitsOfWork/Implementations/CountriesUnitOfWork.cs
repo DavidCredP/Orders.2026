@@ -34,4 +34,9 @@ public class CountriesUnitOfWork : GenericUnitOfWor<Country>, ICountriesUnitOfWo
     {
         return await _countriesRepository.GetAsync(id);
     }
+
+    public async Task<IEnumerable<Country>> GetComboAsync()
+    {
+        return await _countriesRepository.GetComboAsync();
+    }
 }

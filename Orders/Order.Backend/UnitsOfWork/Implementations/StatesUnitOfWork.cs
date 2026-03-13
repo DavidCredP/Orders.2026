@@ -28,4 +28,6 @@ public class StatesUnitOfWork : GenericUnitOfWor<State>, IStatesUnitOfWork
     {
         return await _statesRepository.GetAsync(id);
     }
+
+    public async Task<IEnumerable<State>> GetComboAsync(int countryId) => await _statesRepository.GetComboAsync(countryId);
 }
