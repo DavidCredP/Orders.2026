@@ -24,7 +24,7 @@ public class CategoriesRepository : GenericRepository<Category>, ICategoriesRepo
 
         if (!string.IsNullOrWhiteSpace(pagination.Filter))
         {
-            queryable = queryable.Where(x => x.Name.Contains(pagination.Filter, StringComparison.CurrentCultureIgnoreCase));
+            queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
         }
 
         return new ActionResponse<IEnumerable<Category>>
@@ -43,7 +43,7 @@ public class CategoriesRepository : GenericRepository<Category>, ICategoriesRepo
 
         if (!string.IsNullOrWhiteSpace(pagination.Filter))
         {
-            queryable = queryable.Where(x => x.Name.Contains(pagination.Filter, StringComparison.CurrentCultureIgnoreCase));
+            queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
         }
 
         double count = await queryable.CountAsync();
