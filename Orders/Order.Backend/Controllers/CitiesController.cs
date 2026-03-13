@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Order.Backend.UnitsOfWork.Interfaces;
 using Orders.Shared.DTOs;
 using Orders.Shared.Entities;
 
 namespace Order.Backend.Controllers;
 
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [Route("api/[controller]")]
 
 [ApiController]

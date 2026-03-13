@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Order.Frontend.Components.Pages.Cities;
@@ -8,6 +9,7 @@ using System.Net;
 
 namespace Order.Frontend.Components.Pages.States;
 
+[Authorize(Roles = "Admin")]
 public partial class StateDetails
 {
     private State? state;

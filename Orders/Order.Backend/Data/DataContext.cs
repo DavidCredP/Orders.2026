@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Orders.Shared.Entities;
 
 namespace Order.Backend.Data;
 
-public class DataContext : DbContext
+public class DataContext : IdentityDbContext<User>
 {
     public DataContext(DbContextOptions<DataContext> options) : base(options)
     {

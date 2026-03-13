@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Order.Backend.Data;
 using Order.Backend.UnitsOfWork.Interfaces;
@@ -8,6 +10,7 @@ using System.Diagnostics.Metrics;
 
 namespace Order.Backend.Controllers;
 
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [Route("api/[controller]")]
 
 [ApiController]
