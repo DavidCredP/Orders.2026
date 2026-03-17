@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using Order.Backend.Data;
+using Order.Backend.Helpers;
 using Order.Backend.Repositories.Implementations;
 using Order.Backend.Repositories.Interfaces;
 using Order.Backend.UnitsOfWork.Implementations;
@@ -57,6 +58,7 @@ builder.Services.AddScoped<ICategoriesUnitOfWork, CategoriesUnitOfWork>();
 builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
 builder.Services.AddScoped<IUsersUnitOfWork, UsersUnitOfWork>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+builder.Services.AddScoped<IFileStorage, FileStorage>();
 
 builder.Services.AddTransient<SeedDb>();
 
