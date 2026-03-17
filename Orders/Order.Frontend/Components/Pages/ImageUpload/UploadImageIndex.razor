@@ -1,0 +1,90 @@
+﻿<head>
+    @inject ISnackbar Snackbar
+
+    <style>
+            .file-upload-input {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                z-index: 10;
+                opacity: 0;
+            }
+    </style>
+</head>
+<body>
+
+    <form id="form1" runat="server">
+        <div>
+
+            <div class="row">
+
+                <div class="col-md-4 col-md-offset-4">
+                    Imagen Agregada
+                    <br/>
+                    <MudTooltip Text="Ultima imagen Agregada">
+                        <MudImage src="@imageData64" Elevation="25" Class="rounded-lg ma-4" FallbackSrc="images/NoImage.jpg" />
+                    </MudTooltip>
+                    <br />
+                    <br />
+                    Archivo:
+                    <MudStack Style="width: 100%">
+                        <MudFileUpload T="IReadOnlyList<IBrowserFile>"
+                                       @ref="@_fileUpload"
+                                       OnFilesChanged="OnInputFileChanged"
+                                       Accept=".png, .jpg, .tiff"
+                                       Hidden="@false"
+                                       InputClass="file-upload-input"
+                                       tabindex="-1"
+                                       @ondrop="@ClearDragClass"
+                                       @ondragenter="@SetDragClass"
+                                       @ondragleave="@ClearDragClass"
+                                       @ondragend="@ClearDragClass">
+                            <CustomContent>
+                                <MudPaper Height="300px"
+                                          Outlined="true"
+                                          Class="@_dragClass">
+                                    <MudText Typo="Typo.h6">
+                                        Drag files here or click to browse
+                                    </MudText>
+                                    @foreach (var file in _fileNames)
+                                    {
+                                        <MudChip T="string"
+                                                 Color="Color.Dark"
+                                                 Text="@file"
+                                                 tabindex="-1" />
+                                    }
+                                </MudPaper>
+                            </CustomContent>
+                        </MudFileUpload>
+                        <MudToolBar Gutters="@false"
+                                    Class="relative d-flex justify-end gap-4">
+                            <MudButton Color="Color.Primary"
+                                       OnClick="@OpenFilePickerAsync"
+                                       Variant="Variant.Filled">
+                                Browse files
+                            </MudButton>
+                            <MudButton Color="Color.Primary"
+                                       Disabled="@(!_fileNames.Any())"
+                                       OnClick="@UploadAsync"
+                                       Variant="Variant.Filled">
+                                Upload
+                            </MudButton>
+                            <MudButton Color="Color.Error"
+                                       Disabled="@(!_fileNames.Any())"
+                                       OnClick="@ClearAsync"
+                                       Variant="Variant.Filled">
+                                Clear
+                            </MudButton>
+                        </MudToolBar>
+                    </MudStack>
+                </div>
+
+            </div>
+
+            <div class="row"></div>
+
+        </div>
+    </form>
+
+</body>
