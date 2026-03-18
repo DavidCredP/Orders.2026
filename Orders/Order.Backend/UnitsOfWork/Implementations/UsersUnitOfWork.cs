@@ -34,4 +34,8 @@ public class UsersUnitOfWork : IUsersUnitOfWork
     public async Task<SignInResult> LoginAsync(LoginDTO model) => await _usersRepository.LoginAsync(model);
 
     public async Task LogoutAsync() => await _usersRepository.LogoutAsync();
+
+    public async Task<string> GenerateEmailConfirmationTokenAsync(User user) => await _usersRepository.GenerateEmailConfirmationTokenAsync(user);
+
+    public async Task<IdentityResult> ConfirmEmailAsync(User user, string token) => await _usersRepository.ConfirmEmailAsync(user, token);
 }

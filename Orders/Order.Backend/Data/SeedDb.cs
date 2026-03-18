@@ -23,7 +23,7 @@ public class SeedDb
         await CheckCountriesAsync();
         await CheckCategoriesAsync();
         await CheckRolesAsync();
-        await CheckUserAsync("1010", "David", "Lopez", "dlopeza@yopmail.com", "686 637 0562", "Calle Luna Calle Sol", UserType.Admin);
+        await CheckUserAsync("1010", "David", "Lopez", "dl_admin@yopmail.com", "686 637 0562", "Calle Luna Calle Sol", UserType.Admin);
     }
 
     private async Task<User> CheckUserAsync(string document, string firstName, string lastName, string email, string phone, string address, UserType userType)
@@ -31,6 +31,9 @@ public class SeedDb
         var user = await _usersUnitOfWork.GetUserAsync(email);
         if (user == null)
         {
+            var city = await _context.Cities.FirstOrDefaultAsync(x => x.Name == "Mexicali");
+            city ??= await _context.Cities.FirstOrDefaultAsync();
+
             user = new User
             {
                 FirstName = firstName,
@@ -40,12 +43,15 @@ public class SeedDb
                 PhoneNumber = phone,
                 Address = address,
                 Document = document,
-                City = _context.Cities.FirstOrDefault(),
+                City = city,
                 UserType = userType,
             };
 
             await _usersUnitOfWork.AddUserAsync(user, "123456");
             await _usersUnitOfWork.AddUserToRoleAsync(user, userType.ToString());
+
+            var token = await _usersUnitOfWork.GenerateEmailConfirmationTokenAsync(user);
+            await _usersUnitOfWork.ConfirmEmailAsync(user, token);
         }
 
         return user;

@@ -1,3 +1,4 @@
+using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor.Services;
 using Order.Frontend.AuthenticationProviders;
@@ -17,6 +18,7 @@ builder.Services.AddSingleton(_ => new HttpClient { BaseAddress = new Uri("https
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddAuthorizationCore();
+builder.Services.AddSweetAlert2();
 
 builder.Services.AddScoped<AuthenticationProviderJWT>();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthenticationProviderJWT>(x => x.GetRequiredService<AuthenticationProviderJWT>());

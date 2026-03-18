@@ -1,3 +1,4 @@
+using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Order.Frontend.Repositories;
@@ -172,7 +173,7 @@ public partial class Register
         }
 
         loading = true;
-        var responseHttp = await Repository.PostAsync<UserDTO, TokenDTO>("/api/accounts/CreateUser", userDTO);
+        var responseHttp = await Repository.PostAsync<UserDTO>("/api/accounts/CreateUser", userDTO);
         loading = false;
         if (responseHttp.Error)
         {
@@ -181,7 +182,7 @@ public partial class Register
             return;
         }
 
-        await LoginService.LoginAsync(responseHttp.Response!.Token);
+        await Swal.FireAsync("Confirmación", "Su cuenta ha sido creada con éxito. Se te ha enviado un correo electrónico con las instrucciones para activar tu usuario.", SweetAlertIcon.Info);
         NavigationManager.NavigateTo("/");
     }
 }

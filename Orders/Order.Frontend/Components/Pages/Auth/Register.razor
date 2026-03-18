@@ -1,6 +1,6 @@
 ﻿@page "/Register"
 @using Orders.Shared.Entities
-
+@inject SweetAlertService Swal
 @if (loading)
 {
     <Loading />
@@ -95,4 +95,5 @@ else
             </MudItem>
         </MudGrid>
     </EditForm>
+
 }
