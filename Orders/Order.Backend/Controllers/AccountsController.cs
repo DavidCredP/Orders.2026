@@ -18,15 +18,15 @@ public class AccountsController : ControllerBase
 {
     private readonly IUsersUnitOfWork _usersUnitOfWork;
     private readonly IConfiguration _configuration;
-    private readonly IFileStorage _fileStorage;
-    private readonly string _container;
+    //private readonly IFileStorage _fileStorage;
+    //private readonly string _container;
 
-    public AccountsController(IUsersUnitOfWork usersUnitOfWork, IConfiguration configuration, IFileStorage fileStorage)
+    public AccountsController(IUsersUnitOfWork usersUnitOfWork, IConfiguration configuration)//, IFileStorage fileStorage)
     {
         _usersUnitOfWork = usersUnitOfWork;
         _configuration = configuration;
-        _fileStorage = fileStorage;
-        _container = "users";
+        //_fileStorage = fileStorage;
+        //_container = "users";
     }
 
     [HttpPost("changePassword")]
@@ -65,11 +65,11 @@ public class AccountsController : ControllerBase
                 return NotFound();
             }
 
-            if (!string.IsNullOrEmpty(user.Photo))
+            /*if (!string.IsNullOrEmpty(user.Photo))
             {
                 var photoUser = Convert.FromBase64String(user.Photo);
                 user.Photo = await _fileStorage.SaveFileAsync(photoUser, ".jpg", _container);
-            }
+            }*/
 
             currentUser.Document = user.Document;
             currentUser.FirstName = user.FirstName;
@@ -105,11 +105,11 @@ public class AccountsController : ControllerBase
     {
         User user = model;
 
-        if (!string.IsNullOrEmpty(model.Photo))
+        /*if (!string.IsNullOrEmpty(model.Photo))
         {
             var photoUser = Convert.FromBase64String(model.Photo);
             model.Photo = await _fileStorage.SaveFileAsync(photoUser, ".jpg", _container);
-        }
+        }*/
 
         var result = await _usersUnitOfWork.AddUserAsync(user, model.Password);
         if (result.Succeeded)
@@ -144,7 +144,7 @@ public class AccountsController : ControllerBase
                 new("FirstName", user.FirstName),
                 new("LastName", user.LastName),
                 new("Address", user.Address),
-                new("Photo", user.Photo ?? string.Empty),
+                new("Photo", string.Empty),
                 new("CityId", user.CityId.ToString())
             };
 

@@ -58,7 +58,7 @@ builder.Services.AddScoped<ICategoriesUnitOfWork, CategoriesUnitOfWork>();
 builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
 builder.Services.AddScoped<IUsersUnitOfWork, UsersUnitOfWork>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
-builder.Services.AddScoped<IFileStorage, FileStorage>();
+//builder.Services.AddScoped<IFileStorage, FileStorage>();
 
 builder.Services.AddTransient<SeedDb>();
 

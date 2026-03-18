@@ -1,4 +1,4 @@
-﻿using Azure.Storage.Blobs;
+﻿/*using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 
 namespace Order.Backend.Helpers;
@@ -36,4 +36,4 @@ public class FileStorage : IFileStorage
 
         return blob.Uri.ToString();
     }
-}
+}*/
