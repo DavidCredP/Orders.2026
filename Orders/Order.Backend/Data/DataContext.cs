@@ -14,6 +14,9 @@ public class DataContext : IdentityDbContext<User>
     public DbSet<Category> Categories { get; set; }
     public DbSet<City> Cities { get; set; }
     public DbSet<Country> Countries { get; set; }
+    public DbSet<Product> Products { get; set; }
+    public DbSet<ProductCategory> ProductCategories { get; set; }
+    public DbSet<ProductImage> ProductImages { get; set; }
     public DbSet<State> States { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -22,6 +25,7 @@ public class DataContext : IdentityDbContext<User>
         modelBuilder.Entity<Category>().HasIndex(e => e.Name).IsUnique();
         modelBuilder.Entity<City>().HasIndex(e => new { e.StateId, e.Name }).IsUnique();
         modelBuilder.Entity<Country>().HasIndex(e => e.Name).IsUnique();
+        modelBuilder.Entity<Product>().HasIndex(x => x.Name).IsUnique();
         modelBuilder.Entity<State>().HasIndex(e => new { e.CountryId, e.Name }).IsUnique();
         DisableCascadingDelete(modelBuilder);
     }
