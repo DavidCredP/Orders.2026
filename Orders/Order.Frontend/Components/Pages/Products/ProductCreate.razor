@@ -1,0 +1,15 @@
+﻿@page "/products/create"
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-5">
+    @if (loading)
+    {
+        <div class="d-flex justify-content-center align-items-center" style="height: 50vh;">
+            <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" />
+            <MudText Typo="Typo.h6" Class="ml-3">Cargando...</MudText>
+        </div>
+    }
+    else
+    {
+        <ProductForm @ref="productForm" ProductDTO="productDTO" NonSelectedCategories="nonSelectedCategories" OnValidSubmit="CreateAsync" ReturnAction="Return" />
+    }
+</MudContainer>
