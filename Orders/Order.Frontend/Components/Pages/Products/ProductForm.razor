@@ -1,0 +1,83 @@
+﻿<NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation"></NavigationLock>
+
+<EditForm EditContext="editContext" OnValidSubmit="OnDataAnnotationsValidatedAsync">
+    <DataAnnotationsValidator />
+
+    <MudCard>
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h6">
+                    <MudIcon Icon="@Icons.Material.Filled.AccountBox" Class="mr-2" />
+                    @(IsEdit ? "Editar Producto" : "Crear Nuevo Producto")
+                </MudText>
+            </CardHeaderContent>
+            <CardHeaderActions>
+                <MudButton Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Material.Filled.ArrowBack" Href="/products" Class="mr-2">
+                    Regresar
+                </MudButton>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Save">
+                    Guardar Cambios
+                </MudButton>
+            </CardHeaderActions>
+        </MudCardHeader>
+
+        <MudCardContent>
+            <MudGrid>
+                <MudItem xs="12" sm="6">
+                    <div class="mb-3">
+                        <MudTextField @bind-Value="ProductDTO.Name"
+                                      Label="Nombre"
+                                      Variant="Variant.Outlined"
+                                      For="@(() => ProductDTO.Name)" />
+                    </div>
+                    <div class="mb-3">
+                        <MudTextField @bind-Value="ProductDTO.Description"
+                                      Label="Descripción"
+                                      Variant="Variant.Outlined"
+                                      Lines="3"
+                                      For="@(() => ProductDTO.Description)" />
+                    </div>
+                    <div class="mb-3">
+                        <MudNumericField @bind-Value="ProductDTO.Price"
+                                         Label="Precio"
+                                         Variant="Variant.Outlined"
+                                         Format="C2"
+                                         For="@(() => ProductDTO.Price)" />
+                    </div>
+                    <div class="mb-3">
+                        <MudNumericField @bind-Value="ProductDTO.Stock"
+                                         Label="Inventario"
+                                         Variant="Variant.Outlined"
+                                         For="@(() => ProductDTO.Stock)" />
+                    </div>
+                </MudItem>
+
+                <MudItem xs="12" sm="6">
+                    <div class="mb-3">
+                        <MudText Typo="Typo.subtitle1" Class="mb-2">Categorías:</MudText>
+                        <MultipleSelector NonSelected="nonSelected" Selected="selected" />
+                    </div>
+                    <div class="mb-3">
+                        <InputImg Label="Foto" ImageSelected="ImageSelected" ImageURL="@imageUrl" />
+                    </div>
+                    @if (IsEdit)
+                    {
+                        <div class="mb-3 d-flex gap-2">
+                            <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="AddImageAction" StartIcon="@Icons.Material.Filled.AddShoppingCart">
+                                Agregar Imágenes
+                            </MudButton>
+                            <MudButton Variant="Variant.Outlined" Color="Color.Error" OnClick="RemoveImageAction" StartIcon="@Icons.Material.Filled.Delete">
+                                Eliminar Última Imagen
+                            </MudButton>
+                        </div>
+                    }
+                </MudItem>
+            </MudGrid>
+        </MudCardContent>
+    </MudCard>
+</EditForm>
+
+@if (IsEdit && ProductDTO.ProductImages is not null)
+{
+    <CarouselView Images="ProductDTO.ProductImages" />
+}

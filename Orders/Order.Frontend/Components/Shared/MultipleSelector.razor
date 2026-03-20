@@ -1,0 +1,24 @@
+﻿<div class="d-flex align-items-center justify-content-center gap-4 py-4">
+    <MudList T="MultipleSelector" Class="border rounded pa-2" Style="width: 250px; height: 300px; overflow-y: auto;">
+        @foreach (var item in NonSelected)
+        {
+            <MudListItem OnClick="@(() => Select(item))">@item.Value</MudListItem>
+        }
+    </MudList>
+
+    <div class="d-flex flex-column gap-2">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SelectAll" Class="px-4 py-2">
+            @addAllText
+        </MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="UnselectAll" Class="px-4 py-2">
+            @removeAllText
+        </MudButton>
+    </div>
+
+    <MudList T="MultipleSelector" Class="border rounded pa-2" Style="width: 250px; height: 300px; overflow-y: auto;">
+        @foreach (var item in Selected)
+        {
+            <MudListItem OnClick="@(() => Unselect(item))">@item.Value</MudListItem>
+        }
+    </MudList>
+</div>
