@@ -1,39 +1,23 @@
-﻿/*using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
-
-namespace Order.Backend.Helpers;
+﻿namespace Order.Backend.Helpers;
 
 public class FileStorage : IFileStorage
 {
-    private readonly string _connectionString;
-
-    public FileStorage(IConfiguration configuration)
-    {
-        _connectionString = configuration.GetConnectionString("AzureStorage")!;
-    }
-
     public async Task RemoveFileAsync(string path, string containerName)
     {
-        var client = new BlobContainerClient(_connectionString, containerName);
-        await client.CreateIfNotExistsAsync();
-        var fileName = Path.GetFileName(path);
-        var blob = client.GetBlobClient(fileName);
-        await blob.DeleteIfExistsAsync();
+        // No es necesario eliminar nada físicamente ya que la imagen vive en el registro de la BD.
+        await Task.CompletedTask;
     }
 
     public async Task<string> SaveFileAsync(byte[] content, string extention, string containerName)
     {
-        var client = new BlobContainerClient(_connectionString, containerName);
-        await client.CreateIfNotExistsAsync();
-        client.SetAccessPolicy(PublicAccessType.Blob);
-        var fileName = $"{Guid.NewGuid()}{extention}";
-        var blob = client.GetBlobClient(fileName);
+        // Convertimos el arreglo de bytes a string base64
+        var base64 = Convert.ToBase64String(content);
+        
+        // Removemos el punto de la extensión si lo trae (ej. ".jpg" -> "jpg")
+        var ext = extention.Replace(".", "");
+        if (string.IsNullOrEmpty(ext)) ext = "jpeg";
 
-        using (var ms = new MemoryStream(content))
-        {
-            await blob.UploadAsync(ms);
-        }
-
-        return blob.Uri.ToString();
+        // Devolvemos el string formateado para ser usado directamente en el src de una imagen HTML
+        return $"data:image/{ext};base64,{base64}";
     }
-}*/
+}

@@ -20,17 +20,16 @@ public class AccountsController : ControllerBase
     private readonly IUsersUnitOfWork _usersUnitOfWork;
     private readonly IConfiguration _configuration;
     private readonly IMailHelper _mailHelper;
+    private readonly IFileStorage _fileStorage;
+    private readonly string _container;
 
-    //private readonly IFileStorage _fileStorage;
-    //private readonly string _container;
-
-    public AccountsController(IUsersUnitOfWork usersUnitOfWork, IConfiguration configuration, IMailHelper mailHelper)//, IFileStorage fileStorage)
+    public AccountsController(IUsersUnitOfWork usersUnitOfWork, IConfiguration configuration, IMailHelper mailHelper, IFileStorage fileStorage)
     {
         _usersUnitOfWork = usersUnitOfWork;
         _configuration = configuration;
         _mailHelper = mailHelper;
-        //_fileStorage = fileStorage;
-        //_container = "users";
+        _fileStorage = fileStorage;
+        _container = "users";
     }
 
     [HttpPost("RecoverPassword")]
@@ -154,17 +153,19 @@ public class AccountsController : ControllerBase
                 return NotFound();
             }
 
-            /*if (!string.IsNullOrEmpty(user.Photo))
+            // Si viene una foto nueva y no trae ya el prefijo de data (asumiendo que viene en base64 puro desde el frontend)
+            if (!string.IsNullOrEmpty(user.Photo) && !user.Photo.StartsWith("data:image"))
             {
                 var photoUser = Convert.FromBase64String(user.Photo);
                 user.Photo = await _fileStorage.SaveFileAsync(photoUser, ".jpg", _container);
-            }*/
+            }
 
             currentUser.Document = user.Document;
             currentUser.FirstName = user.FirstName;
             currentUser.LastName = user.LastName;
             currentUser.Address = user.Address;
             currentUser.PhoneNumber = user.PhoneNumber;
+            // Guardamos la foto generada por IFileStorage o mantenemos la existente
             currentUser.Photo = !string.IsNullOrEmpty(user.Photo) && user.Photo != currentUser.Photo ? user.Photo : currentUser.Photo;
             currentUser.CityId = user.CityId;
 
@@ -194,11 +195,11 @@ public class AccountsController : ControllerBase
     {
         User user = model;
 
-        /*if (!string.IsNullOrEmpty(model.Photo))
+        if (!string.IsNullOrEmpty(model.Photo))
         {
             var photoUser = Convert.FromBase64String(model.Photo);
-            model.Photo = await _fileStorage.SaveFileAsync(photoUser, ".jpg", _container);
-        }*/
+            user.Photo = await _fileStorage.SaveFileAsync(photoUser, ".jpg", _container);
+        }
 
         var result = await _usersUnitOfWork.AddUserAsync(user, model.Password);
         if (result.Succeeded)
@@ -265,7 +266,7 @@ public class AccountsController : ControllerBase
                 new("FirstName", user.FirstName),
                 new("LastName", user.LastName),
                 new("Address", user.Address),
-                new("Photo", string.Empty),
+                new("Photo", user.Photo ?? string.Empty), // <- Enviar la foto real
                 new("CityId", user.CityId.ToString())
             };
 
