@@ -41,6 +41,12 @@ public class ProductsController : GenericController<Product>
         return BadRequest(action.Message);
     }
 
+    [HttpGet("all")]
+    public override async Task<IActionResult> GetAsync()
+    {
+        return await base.GetAsync();
+    }
+
     [HttpGet]
     public override async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
     {
