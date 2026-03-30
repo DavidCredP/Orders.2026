@@ -38,6 +38,10 @@ public class AuthenticationProviderJWT : AuthenticationStateProvider, ILoginServ
         {
             return _anonimous;
         }
+        catch (TaskCanceledException)
+        {
+            return _anonimous;
+        }
     }
 
     private AuthenticationState BuildAuthenticationState(string token)
