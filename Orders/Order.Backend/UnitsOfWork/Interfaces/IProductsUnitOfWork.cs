@@ -19,4 +19,6 @@ public interface IProductsUnitOfWork
     Task<ActionResponse<ImageDTO>> AddImageAsync(ImageDTO imageDTO);
 
     Task<ActionResponse<ImageDTO>> RemoveLastImageAsync(ImageDTO imageDTO);
+
+    Task<ActionResponse<Product>> DeleteAsync(int id);
 }
