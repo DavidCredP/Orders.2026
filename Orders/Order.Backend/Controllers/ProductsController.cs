@@ -19,6 +19,18 @@ public class ProductsController : GenericController<Product>
         _productsUnitOfWork = productsUnitOfWork;
     }
 
+    [HttpDelete("{id}")]
+    public override async Task<IActionResult> DeleteAsync(int id)
+    {
+        var action = await _productsUnitOfWork.DeleteAsync(id);
+        if (!action.WasSuccess)
+        {
+            return NotFound();
+        }
+        return NoContent();
+    }
+
+
     [HttpPost("addImages")]
     public async Task<IActionResult> PostAddImagesAsync(ImageDTO imageDTO)
     {
@@ -41,12 +53,14 @@ public class ProductsController : GenericController<Product>
         return BadRequest(action.Message);
     }
 
+    [AllowAnonymous]
     [HttpGet("all")]
     public override async Task<IActionResult> GetAsync()
     {
         return await base.GetAsync();
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public override async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
     {
@@ -58,6 +72,7 @@ public class ProductsController : GenericController<Product>
         return BadRequest();
     }
 
+    [AllowAnonymous]
     [HttpGet("totalPages")]
     public override async Task<IActionResult> GetTotalRecordsAsync([FromQuery] PaginationDTO pagination)
     {
@@ -69,6 +84,7 @@ public class ProductsController : GenericController<Product>
         return BadRequest();
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public override async Task<IActionResult> GetAsync(int id)
     {

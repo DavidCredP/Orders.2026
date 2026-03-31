@@ -28,4 +28,6 @@ public class ProductsUnitOfWork : GenericUnitOfWor<Product>, IProductsUnitOfWork
     public async Task<ActionResponse<ImageDTO>> AddImageAsync(ImageDTO imageDTO) => await _productsRepository.AddImageAsync(imageDTO);
 
     public async Task<ActionResponse<ImageDTO>> RemoveLastImageAsync(ImageDTO imageDTO) => await _productsRepository.RemoveLastImageAsync(imageDTO);
+
+    public override async Task<ActionResponse<Product>> DeleteAsync(int id) => await _productsRepository.DeleteAsync(id);
 }
