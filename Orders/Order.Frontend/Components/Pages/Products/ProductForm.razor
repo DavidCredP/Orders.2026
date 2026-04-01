@@ -63,10 +63,10 @@
                     @if (IsEdit)
                     {
                         <div class="mb-3 d-flex gap-2">
-                            <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="AddImageAction" StartIcon="@Icons.Material.Filled.AddShoppingCart">
+                            <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="() => AddImageAction.InvokeAsync()" StartIcon="@Icons.Material.Filled.AddShoppingCart">
                                 Agregar Imágenes
                             </MudButton>
-                            <MudButton Variant="Variant.Outlined" Color="Color.Error" OnClick="RemoveImageAction" StartIcon="@Icons.Material.Filled.Delete">
+                            <MudButton Variant="Variant.Outlined" Color="Color.Error" OnClick="() => RemoveImageAction.InvokeAsync()" StartIcon="@Icons.Material.Filled.Delete">
                                 Eliminar Última Imagen
                             </MudButton>
                         </div>

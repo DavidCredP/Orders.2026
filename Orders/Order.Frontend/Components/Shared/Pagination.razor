@@ -1,0 +1,16 @@
+<nav>
+    <ul class="pagination justify-content-center">
+        @foreach (var link in links)
+        {
+            <li @onclick=@(() => InternalSelectedPage(link)) style="cursor: pointer;" class="page-item @(link.Enable ? null : "disabled") @(link.Active ? "active" : null)">
+                <a class="page-link">@link.Text</a>
+            </li>
+        }
+        <select class="form-select w-auto" @onchange="ChangeRecordsNumber">
+            @foreach (var option in options)
+            {
+                <option value="@option.Value">@option.Name</option>
+            }
+        </select>
+    </ul>
+</nav>

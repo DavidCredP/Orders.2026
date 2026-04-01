@@ -11,17 +11,23 @@ public partial class AuthLinks
 
     [Inject] private NavigationManager NavigationManager { get; set; } = null!;
     [Inject] private IDialogService DialogService { get; set; } = null!;
+    [Inject] private Order.Frontend.Repositories.IRepository Repository { get; set; } = null!;
     [CascadingParameter] private Task<AuthenticationState> AuthenticationStateTask { get; set; } = null!;
 
     protected override async Task OnParametersSetAsync()
     {
         var authenticationState = await AuthenticationStateTask;
-        var claims = authenticationState.User.Claims.ToList();
-        var photoClaim = claims.FirstOrDefault(x => x.Type == "Photo");
-        var nameClaim = claims.FirstOrDefault(x => x.Type == "UserName");
-        if (photoClaim is not null)
+        if (authenticationState.User.Identity?.IsAuthenticated ?? false)
         {
-            photoUser = photoClaim.Value;
+            var responseHttp = await Repository.GetAsync<Orders.Shared.Entities.User>("/api/accounts");
+            if (!responseHttp.Error)
+            {
+                photoUser = responseHttp.Response?.Photo;
+            }
+        }
+        else
+        {
+            photoUser = null;
         }
     }
 

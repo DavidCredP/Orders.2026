@@ -266,7 +266,6 @@ public class AccountsController : ControllerBase
                 new("FirstName", user.FirstName),
                 new("LastName", user.LastName),
                 new("Address", user.Address),
-                new("Photo", user.Photo ?? string.Empty), // <- Enviar la foto real
                 new("CityId", user.CityId.ToString())
             };
 

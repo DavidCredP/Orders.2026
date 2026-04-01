@@ -2,7 +2,7 @@
     <MudCarousel Class="mud-width-full" Style="height:200px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
         @foreach (var image in Images)
         {
-            @if (image.StartsWith("https://"))
+            @if (!string.IsNullOrEmpty(image))
             {
 
                 <MudCarouselItem Transition="transition" Color="@Color.Primary">

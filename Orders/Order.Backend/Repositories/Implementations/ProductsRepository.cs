@@ -77,7 +77,7 @@ public class ProductsRepository : GenericRepository<Product>, IProductsRepositor
 
         for (int i = 0; i < imageDTO.Images.Count; i++)
         {
-            if (!imageDTO.Images[i].StartsWith("https://"))
+            if (!imageDTO.Images[i].StartsWith("https://") && !imageDTO.Images[i].StartsWith("data:image"))
             {
                 var photoProduct = Convert.FromBase64String(imageDTO.Images[i]);
                 imageDTO.Images[i] = await _fileStorage.SaveFileAsync(photoProduct, ".jpg", "products");
