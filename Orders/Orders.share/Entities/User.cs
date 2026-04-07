@@ -47,4 +47,6 @@ public class User : IdentityUser
     public string FullName => $"{FirstName} {LastName}";
 
     public ICollection<TemporalOrder>? TemporalOrders { get; set; }
+
+    public ICollection<Orden>? Orders { get; set; }
 }

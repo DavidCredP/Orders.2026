@@ -4,7 +4,7 @@ using Orders.Shared.Responses;
 
 namespace Order.Backend.UnitsOfWork.Interfaces;
 
-public interface IProductsUnitOfWork
+public interface IProductsUnitOfWork : IGenericUnitOfWork<Product>
 {
     Task<ActionResponse<Product>> GetAsync(int id);
 
@@ -21,4 +21,6 @@ public interface IProductsUnitOfWork
     Task<ActionResponse<ImageDTO>> RemoveLastImageAsync(ImageDTO imageDTO);
 
     Task<ActionResponse<Product>> DeleteAsync(int id);
+
+    Task<ActionResponse<Product>> UpdateAsync(Product product);
 }

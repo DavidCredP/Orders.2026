@@ -49,4 +49,5 @@ public class Product
 
     public ICollection<TemporalOrder>? TemporalOrders { get; set; }
 
+    public ICollection<OrderDetail>? OrderDetails { get; set; }
 }

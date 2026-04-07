@@ -4,7 +4,7 @@ using Orders.Shared.Responses;
 
 namespace Order.Backend.UnitsOfWork.Interfaces;
 
-public interface ITemporalOrdersUnitOfWork
+public interface ITemporalOrdersUnitOfWork : IGenericUnitOfWork<TemporalOrder>
 {
     Task<ActionResponse<TemporalOrderDTO>> AddFullAsync(string email, TemporalOrderDTO temporalOrderDTO);
 
@@ -15,4 +15,6 @@ public interface ITemporalOrdersUnitOfWork
     Task<ActionResponse<TemporalOrder>> GetAsync(int id);
 
     Task<ActionResponse<TemporalOrder>> PutFullAsync(TemporalOrderDTO temporalOrderDTO);
+
+    Task<ActionResponse<TemporalOrder>> DeleteAsync(int id);
 }
