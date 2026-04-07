@@ -1,16 +1,15 @@
-<nav>
-    <ul class="pagination justify-content-center">
-        @foreach (var link in links)
+<div class="d-flex flex-wrap justify-content-center align-items-center gap-3">
+    <MudPagination Count="TotalPages" 
+                   Selected="CurrentPage" 
+                   SelectedChanged="OnSelectedPageChanged" 
+                   ShowFirstButton="true" 
+                   ShowLastButton="true" />
+
+    <MudSelect T="int" Value="currentRecordsNumber" ValueChanged="OnRecordsNumberChanged" 
+               Variant="Variant.Outlined" Margin="Margin.Dense" Style="max-width: 150px; background-color: white;">
+        @foreach (var option in options)
         {
-            <li @onclick=@(() => InternalSelectedPage(link)) style="cursor: pointer;" class="page-item @(link.Enable ? null : "disabled") @(link.Active ? "active" : null)">
-                <a class="page-link">@link.Text</a>
-            </li>
+            <MudSelectItem Value="@option.Value">@option.Name</MudSelectItem>
         }
-        <select class="form-select w-auto" @onchange="ChangeRecordsNumber">
-            @foreach (var option in options)
-            {
-                <option value="@option.Value">@option.Name</option>
-            }
-        </select>
-    </ul>
-</nav>
+    </MudSelect>
+</div>

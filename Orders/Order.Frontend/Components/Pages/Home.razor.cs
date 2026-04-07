@@ -1,6 +1,9 @@
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using Order.Frontend.Components.Pages.Auth;
 using Order.Frontend.Repositories;
+using Orders.Shared.DTOs;
 using Orders.Shared.Entities;
 
 
@@ -10,6 +13,9 @@ public partial class Home
 {
     private int currentPage = 1;
     private int totalPages;
+    private int counter = 0;
+    private bool isAuthenticated;
+
 
     public List<Product>? Products { get; set; }
     [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
@@ -18,6 +24,9 @@ public partial class Home
     [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
     [Inject] private IRepository Repository { get; set; } = null!;
     [Parameter, SupplyParameterFromQuery] public int RecordsNumber { get; set; } = 8;
+    [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; } = null!;
+    [CascadingParameter] private IModalService Modal { get; set; } = default!;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -70,7 +79,7 @@ public partial class Home
     private async Task<bool> LoadListAsync(int page)
     {
         ValidateRecordsNumber(RecordsNumber);
-        var url = $"api/products?page={page}&RecordsNumber={RecordsNumber}";
+        var url = $"api/products?pageNumber={page}&pageSize={RecordsNumber}";
         if (!string.IsNullOrEmpty(Filter))
         {
             url += $"&filter={Filter}";
@@ -90,7 +99,7 @@ public partial class Home
     private async Task LoadPagesAsync()
     {
         ValidateRecordsNumber(RecordsNumber);
-        var url = $"api/products/totalPages/?RecordsNumber={RecordsNumber}";
+        var url = $"api/products/totalPages/?pageSize={RecordsNumber}";
         if (!string.IsNullOrEmpty(Filter))
         {
             url += $"&filter={Filter}";
@@ -113,7 +122,72 @@ public partial class Home
         await SelectedPageAsync(page);
     }
 
-    private void AddToCartAsync(int productId)
+    protected async override Task OnParametersSetAsync()
     {
+        await CheckIsAuthenticatedAsync();
+        await LoadCounterAsync();
     }
+
+    private async Task CheckIsAuthenticatedAsync()
+    {
+        var authenticationState = await authenticationStateTask;
+        isAuthenticated = authenticationState.User.Identity!.IsAuthenticated;
+    }
+
+    private async Task LoadCounterAsync()
+    {
+        if (!isAuthenticated)
+        {
+            return;
+        }
+
+        var responseHttp = await Repository.GetAsync<int>("/api/temporalOrders/count");
+        if (responseHttp.Error)
+        {
+            return;
+        }
+        counter = responseHttp.Response;
+    }
+
+    private async Task AddToCartAsync(int productId)
+    {
+        if (!isAuthenticated)
+        {
+            Modal.Show<Login>();
+            var toast1 = SweetAlertService.Mixin(new SweetAlertOptions
+            {
+                Toast = true,
+                Position = SweetAlertPosition.BottomEnd,
+                ShowConfirmButton = false,
+                Timer = 3000
+            });
+            await toast1.FireAsync(icon: SweetAlertIcon.Error, message: "Debes haber iniciado sesión para poder agregar productos al carro de compras.");
+            return;
+        }
+
+        var temporalOrderDTO = new TemporalOrderDTO
+        {
+            ProductId = productId
+        };
+
+        var httpActionResponse = await Repository.PostAsync("/api/temporalOrders/full", temporalOrderDTO);
+        if (httpActionResponse.Error)
+        {
+            var message = await httpActionResponse.GetErrorMessageAsync();
+            await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+
+        await LoadCounterAsync();
+
+        var toast2 = SweetAlertService.Mixin(new SweetAlertOptions
+        {
+            Toast = true,
+            Position = SweetAlertPosition.BottomEnd,
+            ShowConfirmButton = true,
+            Timer = 3000
+        });
+        await toast2.FireAsync(icon: SweetAlertIcon.Success, message: "Producto agregado al carro de compras.");
+    }
+
 }

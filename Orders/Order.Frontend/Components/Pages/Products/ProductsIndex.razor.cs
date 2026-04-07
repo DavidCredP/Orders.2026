@@ -73,7 +73,7 @@ public partial class ProductsIndex
     private async Task<bool> LoadListAsync(int page)
     {
         ValidateRecordsNumber(RecordsNumber);
-        var url = $"api/products?page={page}&recordsnumber={RecordsNumber}";
+        var url = $"api/products?pageNumber={page}&pageSize={RecordsNumber}";
         if (!string.IsNullOrEmpty(Filter))
         {
             url += $"&filter={Filter}";
@@ -93,7 +93,7 @@ public partial class ProductsIndex
     private async Task LoadPagesAsync()
     {
         ValidateRecordsNumber(RecordsNumber);
-        var url = $"api/products/totalPages?recordsnumber={RecordsNumber}";
+        var url = $"api/products/totalPages?pageSize={RecordsNumber}";
         if (!string.IsNullOrEmpty(Filter))
         {
             url += $"&filter={Filter}";

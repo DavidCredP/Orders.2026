@@ -58,7 +58,7 @@ public partial class CategoriesIndex
     {
         int page = state.Page + 1;
         int pageSize = state.PageSize;
-        var url = $"{baseUrl}/paginated/?page={page}&recordsnumber={pageSize}";
+        var url = $"{baseUrl}/paginated/?pageNumber={page}&pageSize={pageSize}";
 
         if (!string.IsNullOrWhiteSpace(Filter))
         {

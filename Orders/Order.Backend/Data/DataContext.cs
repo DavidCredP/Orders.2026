@@ -18,6 +18,8 @@ public class DataContext : IdentityDbContext<User>
     public DbSet<ProductCategory> ProductCategories { get; set; }
     public DbSet<ProductImage> ProductImages { get; set; }
     public DbSet<State> States { get; set; }
+    public DbSet<TemporalOrder> TemporalOrders { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

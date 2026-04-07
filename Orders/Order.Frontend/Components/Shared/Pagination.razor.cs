@@ -64,19 +64,22 @@ public partial class Pagination
         links.Add(new PageModel { Text = "Siguiente", PageValue = nextPage, Enable = nextPageEnabled });
     }
 
-    private async Task InternalSelectedPage(PageModel pageModel)
-    {
-        if (pageModel.PageValue == CurrentPage || !pageModel.Enable)
-        {
-            return;
-        }
+    private int currentRecordsNumber = 10;
 
-        await SelectedPage.InvokeAsync(pageModel.PageValue);
+    protected override void OnInitialized()
+    {
+        currentRecordsNumber = IsHome ? 8 : 10;
     }
 
-    private async Task ChangeRecordsNumber(ChangeEventArgs e)
+    private async Task OnSelectedPageChanged(int page)
     {
-        var value = Convert.ToInt32(e.Value);
+        if (page == CurrentPage) return;
+        await SelectedPage.InvokeAsync(page);
+    }
+
+    private async Task OnRecordsNumberChanged(int value)
+    {
+        currentRecordsNumber = value;
         await RecordsNumber.InvokeAsync(value);
     }
 
