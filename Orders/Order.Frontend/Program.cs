@@ -1,3 +1,4 @@
+using BlazingModal;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor.Services;
@@ -20,6 +21,7 @@ builder.Services.AddAuthorizationCore();
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddSweetAlert2();
+builder.Services.AddBlazingModal(); //creo qeu podemos experimentar con este servicio para los modales, aunque no es necesario por el modal de mudblazor
 
 builder.Services.AddScoped<AuthenticationProviderJWT>();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthenticationProviderJWT>(x => x.GetRequiredService<AuthenticationProviderJWT>());

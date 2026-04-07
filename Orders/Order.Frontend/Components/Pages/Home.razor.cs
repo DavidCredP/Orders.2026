@@ -1,11 +1,12 @@
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.Options;
+using MudBlazor;
 using Order.Frontend.Components.Pages.Auth;
 using Order.Frontend.Repositories;
 using Orders.Shared.DTOs;
 using Orders.Shared.Entities;
-
 
 namespace Order.Frontend.Components.Pages;
 
@@ -16,7 +17,6 @@ public partial class Home
     private int counter = 0;
     private bool isAuthenticated;
 
-
     public List<Product>? Products { get; set; }
     [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
     [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
@@ -25,8 +25,7 @@ public partial class Home
     [Inject] private IRepository Repository { get; set; } = null!;
     [Parameter, SupplyParameterFromQuery] public int RecordsNumber { get; set; } = 8;
     [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; } = null!;
-    [CascadingParameter] private IModalService Modal { get; set; } = default!;
-
+    [CascadingParameter] private DialogService Modal { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
@@ -122,7 +121,7 @@ public partial class Home
         await SelectedPageAsync(page);
     }
 
-    protected async override Task OnParametersSetAsync()
+    protected override async Task OnParametersSetAsync()
     {
         await CheckIsAuthenticatedAsync();
         await LoadCounterAsync();
@@ -153,7 +152,7 @@ public partial class Home
     {
         if (!isAuthenticated)
         {
-            Modal.Show<Login>();
+            await Modal.ShowAsync<Login>();
             var toast1 = SweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,
@@ -189,5 +188,4 @@ public partial class Home
         });
         await toast2.FireAsync(icon: SweetAlertIcon.Success, message: "Producto agregado al carro de compras.");
     }
-
 }
